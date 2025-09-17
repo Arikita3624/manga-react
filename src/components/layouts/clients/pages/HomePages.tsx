@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card, Pagination, Spin } from "antd";
 import Meta from "antd/es/card/Meta";
 import { useQuery } from "@tanstack/react-query";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { getHome } from "../../../../configs/api";
 import { Link } from "react-router-dom";
 

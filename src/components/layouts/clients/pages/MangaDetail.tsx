@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Spin, Modal } from "antd";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { getBySlug, getChapterDetails } from "../../../../configs/api";
 
 const MangaDetail = () => {
@@ -81,7 +83,6 @@ const MangaDetail = () => {
       console.warn("Không tìm thấy chapter mới nhất.");
     }
   };
-
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
