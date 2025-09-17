@@ -9,7 +9,11 @@ import { getHome } from "../../../../configs/api";
 import { Link } from "react-router-dom";
 
 const HomePages = () => {
-  const { data, error, isLoading } = useQuery({
+  const {
+    data = [],
+    error,
+    isLoading,
+  } = useQuery<any[]>({
     queryKey: ["home"],
     queryFn: getHome,
   });
@@ -26,8 +30,10 @@ const HomePages = () => {
 
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
-  const currentStories =
-    data?.slice((currentPage - 1) * pageSize, currentPage * pageSize) || [];
+  const currentStories = data.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const onChangePage = (page: number) => {
     setCurrentPage(page);

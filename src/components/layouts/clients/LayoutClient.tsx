@@ -1,11 +1,8 @@
-import React from "react";
 import HeaderClient from "../../views/clients/HeaderClient";
 import FooterClient from "../../views/clients/FooterClient";
 import { Outlet } from "react-router-dom";
 
-type Props = {};
-
-const LayoutClient = (props: Props) => {
+const LayoutClient = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <HeaderClient />

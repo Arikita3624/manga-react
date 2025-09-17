@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Spin, Modal } from "antd";
@@ -31,12 +32,12 @@ const MangaDetail = () => {
   const { chapters } = story || {};
 
   // Function to handle chapter click
-  const handleChapterClick = async (chapterApiData) => {
+  const handleChapterClick = async (chapterApiData: any) => {
     try {
       setIsChapterLoading(true);
       const chapterDetails = await getChapterDetails(chapterApiData);
       // Extract chapter images
-      const images = chapterDetails?.item?.chapter_image?.map((img) => {
+      const images = chapterDetails?.item?.chapter_image?.map((img: any) => {
         const url = `${chapterDetails.domain_cdn}/${chapterDetails.item.chapter_path}/${img.image_file}`;
         console.log("Generated Image URL:", url);
         return url;
@@ -68,12 +69,12 @@ const MangaDetail = () => {
   };
   // Function to handle read latest
   const handleReadLatest = () => {
-    const allChapters = chapters?.flatMap((server) => server.server_data) || [];
-    const sortedChapters = allChapters.sort((a, b) => {
-      // Sắp xếp dựa vào chapter_name (hoặc trường khác có thể đại diện cho thứ tự chương)
+    const allChapters =
+      chapters?.flatMap((server: any) => server.server_data) || [];
+    const sortedChapters = allChapters.sort((a: any, b: any) => {
       const numA = parseInt(a.chapter_name);
       const numB = parseInt(b.chapter_name);
-      return numB - numA; // Sắp xếp giảm dần
+      return numB - numA;
     });
 
     const latestChapter = sortedChapters?.[0]?.chapter_api_data;
@@ -129,8 +130,8 @@ const MangaDetail = () => {
           <div className="max-h-96 overflow-y-auto">
             <ul className="list-none">
               {chapters
-                ?.flatMap((server) => server.server_data)
-                ?.map((chapter, index) => (
+                ?.flatMap((server: any) => server.server_data)
+                ?.map((chapter: any, index: number) => (
                   <li key={index} className="mb-4">
                     <button
                       className="text-black hover:text-blue-800 hover:underline transition-all duration-200"
