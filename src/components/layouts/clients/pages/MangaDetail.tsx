@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Spin, Modal } from "antd";
+import { Skeleton, Modal } from "antd";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { getBySlug, getChapterDetails } from "../../../../configs/api";
@@ -10,48 +10,38 @@ import { getBySlug, getChapterDetails } from "../../../../configs/api";
 const MangaDetail = () => {
   const { slug } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedChapterImages, setSelectedChapterImages] = useState([]);
+  const [selectedChapterImages, setSelectedChapterImages] = useState<string[]>(
+    []
+  );
   const [isChapterLoading, setIsChapterLoading] = useState(false);
 
-  // Get the story data
   const { data, isLoading, error } = useQuery({
     queryKey: ["truyen-tranh", slug],
     queryFn: () => getBySlug(slug),
   });
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <Spin size="large" />
+      <div className="p-6 max-w-6xl mx-auto">
+        <Skeleton active avatar paragraph={{ rows: 6 }} />
       </div>
     );
+  }
 
   if (error instanceof Error) return <div>Error: {error.message}</div>;
-  // Access the story data
+
   const { item: story } = data || {};
   const { chapters } = story || {};
 
-  // Function to handle chapter click
   const handleChapterClick = async (chapterApiData: any) => {
     try {
       setIsChapterLoading(true);
       const chapterDetails = await getChapterDetails(chapterApiData);
-      // Extract chapter images
-      const images = chapterDetails?.item?.chapter_image?.map((img: any) => {
-        const url = `${chapterDetails.domain_cdn}/${chapterDetails.item.chapter_path}/${img.image_file}`;
-        console.log("Generated Image URL:", url);
-        return url;
-      });
-
-      console.log("Chapter Images:", images);
-
-      if (images && images.length > 0) {
-        setSelectedChapterImages(images);
-      } else {
-        console.warn("No images found in chapter details");
-        setSelectedChapterImages([]);
-      }
-
+      const images =
+        chapterDetails?.item?.chapter_image?.map((img: any) => {
+          return `${chapterDetails.domain_cdn}/${chapterDetails.item.chapter_path}/${img.image_file}`;
+        }) || [];
+      setSelectedChapterImages(images);
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error fetching chapter details:", error);
@@ -60,14 +50,11 @@ const MangaDetail = () => {
     }
   };
 
-  // Function to handle read from start
   const handleReadFromStart = () => {
     const firstChapter = chapters?.[0]?.server_data[0]?.chapter_api_data;
-    if (firstChapter) {
-      handleChapterClick(firstChapter);
-    }
+    if (firstChapter) handleChapterClick(firstChapter);
   };
-  // Function to handle read latest
+
   const handleReadLatest = () => {
     const allChapters =
       chapters?.flatMap((server: any) => server.server_data) || [];
@@ -76,13 +63,8 @@ const MangaDetail = () => {
       const numB = parseInt(b.chapter_name);
       return numB - numA;
     });
-
     const latestChapter = sortedChapters?.[0]?.chapter_api_data;
-    if (latestChapter) {
-      handleChapterClick(latestChapter);
-    } else {
-      console.warn("Không tìm thấy chapter mới nhất.");
-    }
+    if (latestChapter) handleChapterClick(latestChapter);
   };
 
   return (
@@ -107,7 +89,6 @@ const MangaDetail = () => {
               Trạng thái: {story?.status}
             </p>
           </div>
-          {/* Read buttons */}
           <div className="flex justify-center gap-4 mb-6">
             <button
               className="bg-slate-800 text-white hover:bg-white hover:text-black p-2 rounded"
@@ -156,7 +137,7 @@ const MangaDetail = () => {
         footer={null}
       >
         {isChapterLoading ? (
-          <p>Đang tải hình ảnh...</p>
+          <Skeleton active paragraph={{ rows: 6 }} />
         ) : selectedChapterImages.length === 0 ? (
           <p>Không tìm thấy hình ảnh cho chương này. Vui lòng thử lại sau.</p>
         ) : (
