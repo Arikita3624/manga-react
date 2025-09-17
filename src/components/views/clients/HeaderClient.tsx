@@ -1,9 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-type Props = {};
-
-const HeaderClient = (props: Props) => {
+const HeaderClient = () => {
   return (
     <header className="header flex justify-between items-center py-4 px-10 bg-black text-white shadow-lg">
       <div className="logo text-2xl font-bold">

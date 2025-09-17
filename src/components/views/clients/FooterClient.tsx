@@ -1,8 +1,4 @@
-import React from "react";
-
-type Props = {};
-
-const FooterClient = (props: Props) => {
+const FooterClient = () => {
   return (
     <footer className="bg-black text-white py-8 mt-10">
       <div className="max-w-screen-lg mx-auto px-4">

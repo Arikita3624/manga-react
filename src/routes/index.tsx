@@ -1,12 +1,9 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import LayoutClient from "../components/layouts/clients/LayoutClient";
 import HomePages from "../components/layouts/clients/pages/HomePages";
 import MangaDetail from "../components/layouts/clients/pages/MangaDetail";
 
-type Props = {};
-
-const Router = (props: Props) => {
+const Router = () => {
   return (
     <div>
       <Routes>
